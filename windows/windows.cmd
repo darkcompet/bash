@@ -1,0 +1,12 @@
+doskey l=dir
+doskey ls=dir
+doskey .=cd ..
+doskey ..=cd ../..
+doskey cd_a=A: ;l
+doskey cd_b=B: ;l
+doskey cd_c=C: ;l
+doskey cd_d=D: ;l
+doskey cd_e=E: ;l
+doskey cd_f=F: ;l
+doskey cd_g=G: ;l
+doskey cd_h=H: ;l
