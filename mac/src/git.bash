@@ -1,5 +1,5 @@
 # Upload to remote Git repository
-__git_push () {
+dk_git_push () {
    branchName=$(git branch | cut -d ' ' -f2)
    printf "Enter commit message for branch '$branchName': "
 

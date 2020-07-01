@@ -1,4 +1,4 @@
-__cpp () {
+dk_cpp_compile () {
    if [[ $1 == "" ]]; then
       echo "Usage: cmd [fileName]"
       return

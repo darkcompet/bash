@@ -8,10 +8,10 @@ alias l="ls -a"
 alias ll="ls -la"
 
 # Actions onto bash profile
-__bash () {
+dk_bash () {
    case $1 in
       "edit" )
-         __open sub ~/workspace/programming/libraries/libs_bash/macos
+         code ~/workspace/darkcompet/bash/mac
          return;;
       "update" )
          source ~/.zshrc
@@ -24,8 +24,8 @@ __bash () {
 
 # Remove data permanently
 # if you wanna change at sudo level, add -g option after alias keyword.
-alias rm="__rm"
-__rm () {
+alias rm="dk_remove"
+dk_remove () {
    if [[ $* == "" ]]; then
       echo "Nothing to remove"
       return
@@ -71,8 +71,8 @@ __rm () {
 
 # Trash data to Recycle bin.
 # Just tell Finder do for us since a lot of features has to implement, eg., push back from Trash...
-alias dl="__delete"
-__delete () {
+alias dl="dk_delete"
+dk_delete () {
    if [[ $1 == "" ]]; then
       echo "Usage: cmd $fileName"
       return
@@ -86,8 +86,8 @@ __delete () {
 }
 
 # Clear current text on terminal
-alias cl="__clear"
-__clear () {
+alias cl="dk_clear"
+dk_clear () {
    case $1 in
       "" )
          clear
@@ -96,7 +96,7 @@ __clear () {
 }
 
 # Change directory
-alias cd="__cd"
-__cd () {
+alias cd="dk_cd"
+dk_cd () {
    \cd "$@"; ls -a
 }

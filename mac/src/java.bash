@@ -1,4 +1,4 @@
-__java () {
+dk_java () {
    if [[ $1 == "" ]]; then
       echo "cmd $fileName"
       return
