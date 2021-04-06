@@ -71,96 +71,96 @@ alias ll="ls -la"
 
 # Actions onto bash profile
 __bash () {
-   case $1 in
-      "edit" )
-         code ~/workspace/darkcompet/bash/mac
-         return;;
-      "update" )
-         source ~/.zshrc
-         return;;
-      * )
-         echo "Usage: cmd [edit | update]"
-         return;;
-   esac
+	case $1 in
+		"edit" )
+			code ~/workspace/darkcompet/bash/mac
+			return;;
+		"update" )
+			source ~/.zshrc
+			return;;
+		* )
+			echo "Usage: cmd [edit | update]"
+			return;;
+	esac
 }
 
 # Remove data permanently
 # if you wanna change at sudo level, add -g option after alias keyword.
 alias rm="__remove"
 __remove () {
-   if [[ $* == "" ]]; then
-      echo "Nothing to remove"
-      return
-   fi
+	if [[ $* == "" ]]; then
+		echo "Nothing to remove"
+		return
+	fi
 
-   fileNamesExpression=""
-   first="1"
+	fileNamesExpression=""
+	first="1"
 
-   for fileName in "$@"; do
-      if [[ $first == "1" ]]; then
-         first="0"
-         fileNamesExpression+="'$fileName'"
-      elif [[ $first == "0" ]]; then
-         fileNamesExpression+=", '$fileName'"
-      fi
-   done
+	for fileName in "$@"; do
+		if [[ $first == "1" ]]; then
+			first="0"
+			fileNamesExpression+="'$fileName'"
+		elif [[ $first == "0" ]]; then
+			fileNamesExpression+=", '$fileName'"
+		fi
+	done
 
-   printf "Don't use this command as possible as you can since it will delete data permanently, maybe impossible to recovery. "
-   printf "Consider use [dl] instead to move data to Recycle bin, so you can push back later.\n"
-   echo "But if you still wanna continue, please enter [yes/*] to delete/abort files [$fileNamesExpression]."
+	printf "Don't use this command as possible as you can since it will delete data permanently, maybe impossible to recovery. "
+	printf "Consider use [dl] instead to move data to Recycle bin, so you can push back later.\n"
+	echo "But if you still wanna continue, please enter [yes/*] to delete/abort files [$fileNamesExpression]."
 
-   read confirmation
+	read confirmation
 
-   if [[ $confirmation != "yes" ]]; then
-      echo "Aborted since you did not agree on this action"
-      return
-   fi
+	if [[ $confirmation != "yes" ]]; then
+		echo "Aborted since you did not agree on this action"
+		return
+	fi
 
-   for target_file in "$@"; do
-      sudo rm -rf "$target_file"
+	for target_file in "$@"; do
+		sudo rm -rf "$target_file"
 
-      result=$?
+		result=$?
 
-      if [[ $result == "0" ]]; then
-         echo "Removed file '$target_file' successful"
-      elif [[ $result == "-1" ]]; then
-         echo "Failed to remove file '$target_file'"
-      fi
-   done
+		if [[ $result == "0" ]]; then
+			echo "Removed file '$target_file' successful"
+		elif [[ $result == "-1" ]]; then
+			echo "Failed to remove file '$target_file'"
+		fi
+	done
 
-   echo "Permanently removed $# files [$fileNamesExpression]"
+	echo "Permanently removed $# files [$fileNamesExpression]"
 }
 
 # Trash data to Recycle bin.
 # Just tell Finder do for us since a lot of features has to implement, eg., push back from Trash...
 alias dl="__delete"
 __delete () {
-   if [[ $1 == "" ]]; then
-      echo "Usage: cmd $fileName"
-      return
-   fi
+	if [[ $1 == "" ]]; then
+		echo "Usage: cmd $fileName"
+		return
+	fi
 
-   filePath="$(pwd)/$1"
+	filePath="$(pwd)/$1"
 
-   osascript -e "tell application \"Finder\" to delete POSIX file \"$filePath\"" >> /dev/null
+	osascript -e "tell application \"Finder\" to delete POSIX file \"$filePath\"" >> /dev/null
 
-   echo "Moved to trash: $filePath"
+	echo "Moved to trash: $filePath"
 }
 
 # Clear current text on terminal
 alias cl="__clear"
 __clear () {
-   case $1 in
-      "" )
-         clear
-         return;;
-   esac
+	case $1 in
+		"" )
+			clear
+			return;;
+	esac
 }
 
 # Change directory
 alias cd="__cd"
 __cd () {
-   \cd "$@"; ls -a
+	\cd "$@"; ls -a
 }
 
 
@@ -170,78 +170,78 @@ __cd () {
 
 # Compress (zip) files to a archivement
 __compress () {
-   case $1 in
-      "" )
-         echo "Usage: cmd [zip | gz | bz2] param_outFileName param_inFileName"
-         return;;
-      "zip" )
-         \zip $2.zip $3
-         return;;
-      "gz" )
-         \tar -zcvf $2.tar.gz $3
-         return;;
-      "bz2" )
-         \tar -jcvf $2.tar.bz2 $3
-         return;;
-   esac
+	case $1 in
+		"" )
+			echo "Usage: cmd [zip | gz | bz2] param_outFileName param_inFileName"
+			return;;
+		"zip" )
+			\zip $2.zip $3
+			return;;
+		"gz" )
+			\tar -zcvf $2.tar.gz $3
+			return;;
+		"bz2" )
+			\tar -jcvf $2.tar.bz2 $3
+			return;;
+	esac
 }
 
 # Extracts (unzip) a file to set of pieces.
 __extract () {
-   if [ -f $1 ]; then
-      case $1 in
-         "" )
-            echo "Usage: cmd param_fileName"
-            return;;
-         *.rar )
-            ~/rar/unrar x *.rar
-            return;;
-         *.tar.bz2 )
-            \tar xjf $1
-            return;;
-         *.tar.gz )
-            \tar xvzf $1
-            return;;
-         *.bz2 )
-            \bunzip2 $1
-            return;;
-         *.rar )
-            \unrar e $1
-            return;;
-         *.gz )
-            \gunzip $1
-            return;;
-         *.tar )
-            \tar xf $1
-            return;;
-         *.tbz2 )
-            \tar xjf $1
-            return;;
-         *.tgz )
-            \tar xzf $1
-            return;;
-         *.zip )
-            \unzip $1
-            return;;
-         *.Z )
-            \uncompress $1
-            return;;
-         *.7z )
-            \7z x $1
-            return;;
-         *.war )
-            \jar -xvf $1
-            return;;
-         *.gif )
-            \convert -coalesce $1 ./out.png
-            return;;
-         * )
-            echo "'$1' cannot be extracted via __extract()"
-            return;;
-      esac
-   else
-      echo "'$1' is not a valid file"
-   fi
+	if [ -f $1 ]; then
+		case $1 in
+			"" )
+				echo "Usage: cmd param_fileName"
+				return;;
+			*.rar )
+				~/rar/unrar x *.rar
+				return;;
+			*.tar.bz2 )
+				\tar xjf $1
+				return;;
+			*.tar.gz )
+				\tar xvzf $1
+				return;;
+			*.bz2 )
+				\bunzip2 $1
+				return;;
+			*.rar )
+				\unrar e $1
+				return;;
+			*.gz )
+				\gunzip $1
+				return;;
+			*.tar )
+				\tar xf $1
+				return;;
+			*.tbz2 )
+				\tar xjf $1
+				return;;
+			*.tgz )
+				\tar xzf $1
+				return;;
+			*.zip )
+				\unzip $1
+				return;;
+			*.Z )
+				\uncompress $1
+				return;;
+			*.7z )
+				\7z x $1
+				return;;
+			*.war )
+				\jar -xvf $1
+				return;;
+			*.gif )
+				\convert -coalesce $1 ./out.png
+				return;;
+			* )
+				echo "'$1' cannot be extracted via __extract()"
+				return;;
+		esac
+	else
+		echo "'$1' is not a valid file"
+	fi
 }
 
 
@@ -250,21 +250,21 @@ __extract () {
 ##
 
 __cpp_compile () {
-   if [[ $1 == "" ]]; then
-      echo "Usage: cmd [fileName]"
-      return
-   fi
+	if [[ $1 == "" ]]; then
+		echo "Usage: cmd [fileName]"
+		return
+	fi
 
-   fileName="$(echo $1 | cut -d '.' -f1)"
-   g++ -std=c++14 -O2 -Wall $fileName.cpp -o a.out
+	fileName="$(echo $1 | cut -d '.' -f1)"
+	g++ -std=c++14 -O2 -Wall $fileName.cpp -o a.out
 
-   if [[ $# == "" ]]; then
-      echo "Compile failed"
-      return
-   fi
+	if [[ $# == "" ]]; then
+		echo "Compile failed"
+		return
+	fi
 
-   echo "Compile successful"
-   ./a.out
+	echo "Compile successful"
+	./a.out
 }
 
 
@@ -273,109 +273,109 @@ __cpp_compile () {
 ##
 
 __csharp () {
-   if [[ $1 == "" ]]; then
-      echo "cmd [fileName]"
-      return
-   fi
+	if [[ $1 == "" ]]; then
+		echo "cmd [fileName]"
+		return
+	fi
 
-   fileName="$(echo $1 | cut -d '.' -f1)"
+	fileName="$(echo $1 | cut -d '.' -f1)"
 
-   mcs $fileName.cs
+	mcs $fileName.cs
 
-   if [[ $# == "" ]]; then
-      echo "Compile failed"
-      return
-   fi
+	if [[ $# == "" ]]; then
+		echo "Compile failed"
+		return
+	fi
 
-   echo "Compile successful"
-   mono $fileName.exe
+	echo "Compile successful"
+	mono $fileName.exe
 }
 
 # For Android with device.
 __android_device () {
-   if [[ $1 == "" ]]; then
-      echo "cmd connect $dev_ip_address_follow_192.168"
-      return
-   fi
+	if [[ $1 == "" ]]; then
+		echo "cmd connect $dev_ip_address_follow_192.168"
+		return
+	fi
 
-   if [[ $1 == "connect" ]]; then
-      dev_ip_address=192.168.$2
-      echo "Connecting to $dev_ip_address"
-      adb kill-server
-      adb start-server
-      adb tcpip 5555
-      adb connect $dev_ip_address:5555
-   fi
+	if [[ $1 == "connect" ]]; then
+		dev_ip_address=192.168.$2
+		echo "Connecting to $dev_ip_address"
+		adb kill-server
+		adb start-server
+		adb tcpip 5555
+		adb connect $dev_ip_address:5555
+	fi
 }
 
 __quit_app () {
-   case $1 in
-      "" )
-         echo "Usage: cmd $appName"
-         return;;
-      * )
-         pid=$(ps -A | grep -m1 "$1" | awk '{print $1}')
-         eval "kill -9 $pid"
-         echo "quited app at pid $pid"
-         return;;
-   esac
+	case $1 in
+		"" )
+			echo "Usage: cmd $appName"
+			return;;
+		* )
+			pid=$(ps -A | grep -m1 "$1" | awk '{print $1}')
+			eval "kill -9 $pid"
+			echo "quited app at pid $pid"
+			return;;
+	esac
 }
 
 __show_own_functions () {
-   set | fgrep " ()"
+	set | fgrep " ()"
 }
 
 # Calculate size of files
 __sizeof () {
-   case $1 in
-      "" )
-         echo "Usage: cmd $fileName"
-         return;;
-      * )
-         du -sh "$1"
-         return;;
-   esac
+	case $1 in
+		"" )
+			echo "Args: `filename`"
+			return;;
+		* )
+			du -sh "$1"
+			return;;
+	esac
 }
 
 __wifi () {
-   case $1 in
-      "" )
-         echo "Usage: cmd [on | off]"
-         return;;
-      "on" )
-         \networksetup -setairportpower airport on
-         return;;
-      "off" )
-         \networksetup -setairportpower airport off
-         return;;
-   esac
+	case $1 in
+		"" )
+			echo "Option: --on, --off"
+			return;;
+		"--on" )
+			\networksetup -setairportpower airport on
+			return;;
+		"--off" )
+			\networksetup -setairportpower airport off
+			return;;
+	esac
 }
 
 # Eject disk
 __eject_disk () {
-   case $1 in
-      "" )
-         echo "cmd [fileName]"
-         return;;
-      * )
-         \diskutil eject $1
-         return;;
-   esac
+	case $1 in
+		"" )
+			echo "Args: `fileName`"
+			return;;
+		* )
+			\diskutil eject $1
+			return;;
+	esac
 }
 
 __device () {
-   case $1 in
-      "" )
-         echo "Usage: cmd [turn_off_screen]"
-         return;;
-      "turn_off_screen" )
-         /System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine
-         return;;
-   esac
+	case $1 in
+		"" )
+			echo "Options: --turn_off_screen"
+			return;;
+		"--turn_off_screen" )
+			/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine
+			return;;
+	esac
 }
 
 __start_localhost_with_python_at () {
-   \python -m SimpleHTTPServer
+	\python -m SimpleHTTPServer
 }
 
 ##
@@ -384,21 +384,21 @@ __start_localhost_with_python_at () {
 
 # Upload to remote Git repository
 __git_push () {
-   branchName=$(git branch | cut -d ' ' -f2)
-   printf "Enter commit message for branch '$branchName': "
+	branchName=$(git branch | cut -d ' ' -f2)
+	printf "Enter commit message for branch '$branchName': "
 
-   commit_msg=""
-   read commit_msg
+	commit_msg=""
+	read commit_msg
 
-   if [[ $commit_msg == "" ]]; then
-      commit_msg="make it better"
-   fi
+	if [[ $commit_msg == "" ]]; then
+		commit_msg="make it better"
+	fi
 
-   git add --all
-   git commit -m "$commit_msg"
-   git push
+	git add --all
+	git commit -m "$commit_msg"
+	git push
 
-   echo "Uploaded to remote branch '$branchName'"
+	echo "Uploaded to remote branch '$branchName'"
 }
 
 
@@ -407,23 +407,23 @@ __git_push () {
 ##
 
 __java () {
-   if [[ $1 == "" ]]; then
-      echo "cmd $fileName"
-      return
-   fi
+	if [[ $1 == "" ]]; then
+		echo "cmd $fileName"
+		return
+	fi
 
-   fileName="$(echo $1 | cut -d '.' -f1)"
-   classPath="/Users/Compet/.Trash/"
+	fileName="$(echo $1 | cut -d '.' -f1)"
+	classPath="/Users/Compet/.Trash/"
 
-   javac -d $classPath $fileName.java
+	javac -d $classPath $fileName.java
 
-   if [[ $# == "" ]]; then
-      echo "Compilation failed"
-      return
-   fi
+	if [[ $# == "" ]]; then
+		echo "Compilation failed"
+		return
+	fi
 
-   echo "Compilation successful"
-   java -cp $classPath $fileName
+	echo "Compilation successful"
+	java -cp $classPath $fileName
 }
 
 
@@ -483,7 +483,7 @@ __top() {
 }
 
 __powermetric() {
-	sudo powermetrics  | grep "die"
+	sudo powermetrics | grep "die"
 }
 
 
@@ -509,29 +509,29 @@ __split () {
 alias g="__goto"
 __goto () {
 	case $1 in
-	"s" )
+	"--s" )
 		__cd /Volumes/Storage
 		return;;
-	"w" )
+	"--w" )
 		__cd ~/workspace/wiki
 		return;;
-	"m" )
+	"--m" )
 		__cd ~/workspace/marbled
 		return;;
-	"p" )
+	"--p" )
 		__cd ~/workspace/projects
 		return;;
-	"d" )
+	"--d" )
 		__cd ~/workspace/darkcompet
 		return;;
-	"k" )
+	"--k" )
 		__cd ~/workspace/kilobytes
 		return;;
-	"l" )
+	"--l" )
 		__cd ~/workspace/libraries
 		return;;
 	* )
-		"cmd [d | k | l | m | p | s | w]"
+		"Options: --d (darkcompet), --k (kilobytes), --l (libraries), --m (marble), --p (projects), --s (storage), --w (workspace)"
 		return;;
 	esac
 }
@@ -543,67 +543,67 @@ __open_app () {
 		echo "This command will open the software with specified parameters"
 		echo "cmd [and | cod | int |...]"
 		return;;
-	"and" )
+	"--and" )
 		\open -a Android\ Studio $2
 		return;;
-	"ato" )
+	"--ato" )
 		\open -a Atom $2
 		return;;
-	"chr" )
+	"--chr" )
 		\open -a Google\ Chrome $2
 		return;;
-	"cod" )
+	"--cod" )
 		\open -a Visual\ Studio\ Code $2
 		return;;
-	"cha" )
+	"--cha" )
 		\open -a Chatwork $2
 		return;;
-	"doc" )
+	"--doc" )
 		\open -a Docker $2
 		return;;
-	"dro" )
+	"--dro" )
 		\open -a Dropbox $2
 		return;;
-	"dic" )
+	"--dic" )
 		\open -a Dictionary $2
 		return;;
-	"dri" )
+	"--dri" )
 		\open -a Google\ Drive $2
 		return;;
-	"int" )
+	"--int" )
 		\open -a IntelliJ\ IDEA\ CE $2
 		return;;
-	"sto" )
+	"--sto" )
 		\open -a PhpStorm $2
 		return;;
-	"sub" )
+	"--sub" )
 		\open -a Sublime\ Text $2
 		return;;
-	"lin" )
+	"--lin" )
 		\open -a Line $2
 		return;;
-	"lau" )
+	"--lau" )
 		\open -a LaunchPad
 		return;;
-	"mes" )
+	"--mes" )
 		\open -a Messages $2
 		return;;
-	"nav" )
+	"--nav" )
 		\open -a Navicat\ Premium $2
 		return;;
-	"saf" )
+	"--saf" )
 		\open -a Safari $2
 		return;;
-	"sky" )
+	"--sky" )
 		\open -a Skype
 		return;;
-	"sub" )
+	"--sub" )
 		\open -a Sublime\ Text $2
 		return;;
-	"uni" )
+	"--uni" )
 		\open /Applications/Unity\/Unity.app $2
 		return;;
-	"wor" )
+	"--wor" )
 		\open -a MySQLWorkbench $2
 		return;;
 	* )
