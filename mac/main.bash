@@ -342,10 +342,10 @@ __wifi () {
 		"" )
 			echo "Option: --on, --off"
 			return;;
-		"-on" )
+		"on" )
 			\networksetup -setairportpower airport on
 			return;;
-		"-off" )
+		"off" )
 			\networksetup -setairportpower airport off
 			return;;
 	esac
@@ -368,7 +368,7 @@ __device () {
 		"" )
 			echo "Options: --turn_off_screen"
 			return;;
-		"-turn_off_screen" )
+		"turn_off_screen" )
 			/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine
 			return;;
 	esac
@@ -509,25 +509,25 @@ __split () {
 alias g="__goto"
 __goto () {
 	case $1 in
-	"-s" )
+	"s" )
 		__cd /Volumes/Storage
 		return;;
-	"-w" )
+	"w" )
 		__cd ~/workspace/wiki
 		return;;
-	"-m" )
+	"m" )
 		__cd ~/workspace/marbled
 		return;;
-	"-p" )
+	"p" )
 		__cd ~/workspace/projects
 		return;;
-	"-d" )
+	"d" )
 		__cd ~/workspace/darkcompet
 		return;;
-	"-k" )
+	"k" )
 		__cd ~/workspace/kilobytes
 		return;;
-	"-l" )
+	"l" )
 		__cd ~/workspace/libraries
 		return;;
 	* )
@@ -543,73 +543,73 @@ __open_app () {
 		echo "This command will open the software with specified parameters"
 		echo "cmd [and | cod | int |...]"
 		return;;
-	"-and" )
+	"and" )
 		\open -a Android\ Studio $2
 		return;;
-	"-ato" )
+	"ato" )
 		\open -a Atom $2
 		return;;
-	"-chr" )
+	"chr" )
 		\open -a Google\ Chrome $2
 		return;;
-	"-cod" )
+	"cod" )
 		\open -a Visual\ Studio\ Code $2
 		return;;
-	"-cha" )
+	"cha" )
 		\open -a Chatwork $2
 		return;;
-	"-doc" )
+	"doc" )
 		\open -a Docker $2
 		return;;
-	"-dro" )
+	"dro" )
 		\open -a Dropbox $2
 		return;;
-	"-dic" )
+	"dic" )
 		\open -a Dictionary $2
 		return;;
-	"-dri" )
+	"dri" )
 		\open -a Google\ Drive $2
 		return;;
-	"-xco" )
+	"xco" )
 		\open -a XCode $2
 		return;;
-	"-int" )
+	"int" )
 		\open -a IntelliJ\ IDEA\ CE $2
 		return;;
-	"-sto" )
+	"sto" )
 		\open -a PhpStorm $2
 		return;;
-	"-sub" )
+	"sub" )
 		\open -a Sublime\ Text $2
 		return;;
-	"-lin" )
+	"lin" )
 		\open -a Line $2
 		return;;
-	"-lau" )
+	"lau" )
 		\open -a LaunchPad
 		return;;
-	"-mes" )
+	"mes" )
 		\open -a Messages $2
 		return;;
-	"-nav" )
+	"nav" )
 		\open -a Navicat\ Premium $2
 		return;;
-	"-saf" )
+	"saf" )
 		\open -a Safari $2
 		return;;
-	"-sky" )
+	"sky" )
 		\open -a Skype
 		return;;
-	"-sub" )
+	"sub" )
 		\open -a Sublime\ Text $2
 		return;;
-	"-uni" )
+	"uni" )
 		\open /Applications/Unity\/Unity.app $2
 		return;;
-	"-wor" )
+	"wor" )
 		\open -a MySQLWorkbench $2
 		return;;
-	"-zil" )
+	"zil" )
 		\open -a FileZilla $2
 		return;;
 	* )
